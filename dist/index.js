@@ -25,6 +25,9 @@ const io = new socket_io_1.Server(httpServer, {
         methods: ["GET", "POST"],
     },
 });
+app.get("/", (req, res) => {
+    res.send("Hello World!");
+});
 io.on("connection", (socket) => {
     console.log("A user connected");
     socket.on("create-poll", (pollData) => __awaiter(void 0, void 0, void 0, function* () {
@@ -185,3 +188,6 @@ process.on("SIGINT", () => __awaiter(void 0, void 0, void 0, function* () {
     yield prisma.$disconnect();
     process.exit();
 }));
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});

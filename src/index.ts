@@ -22,6 +22,11 @@ const io = new Server(httpServer, {
   },
 });
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+}
+);
+
 io.on("connection", (socket) => {
   console.log("A user connected");
 
@@ -191,3 +196,7 @@ process.on("SIGINT", async () => {
   await prisma.$disconnect();
   process.exit();
 });
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+})
