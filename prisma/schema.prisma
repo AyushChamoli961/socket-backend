@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  Quiz      Quiz[]
+}
+
+model Option {
+  id           Int            @id @default(autoincrement())
+  questionId   Int
+  text         String
+  isCorrect    Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  Question     Question       @relation(fields: [questionId], references: [id])
+  UserResponse UserResponse[]
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  quizId    Int
+  text      String
+  createdAt DateTime @default(now())
+  options   Option[]
+  Quiz      Quiz     @relation(fields: [quizId], references: [id])
+}
+
+model Quiz {
+  id           Int            @id @default(autoincrement())
+  title        String
+  description  String         @default("")
+  imgUrl       String?
+  adminID      Int
+  status       QuizStatus     @default(INACTIVE)
+  time         Int            @default(0)
+  isActive     Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  room         String?        @unique
+  Question     Question[]
+  Admin        Admin          @relation(fields: [adminID], references: [id])
+  userResponse UserResponse[]
+}
+
+model User {
+  email        String         @unique
+  name         String
+  userId       String         @unique
+  createdAt    DateTime       @default(now())
+  id           Int            @id @default(autoincrement())
+  response     Response[]
+  userResponse UserResponse[]
+}
+
+model UserResponse {
+  quizId           Int
+  userId           String
+  questionId       Int
+  selectedOptionId Int
+  createdAt        DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  Quiz             Quiz     @relation(fields: [quizId], references: [id])
+  Option           Option   @relation(fields: [selectedOptionId], references: [id])
+  User             User     @relation(fields: [userId], references: [userId])
+}
+
+model Poll {
+  id           String         @id @default(cuid())
+  title        String
+  isLive       Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  createdBy    String
+  pollQuestion PollQuestion[]
+}
+
+model PollOption {
+  text         String
+  questionId   String
+  id           Int          @id @default(autoincrement())
+  pollQuestion PollQuestion @relation(fields: [questionId], references: [id])
+  Response     Response[]
+}
+
+model PollQuestion {
+  id         String       @id @default(cuid())
+  text       String
+  pollId     String
+  pollOption PollOption[]
+  Poll       Poll         @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  Response   Response[]
+}
+
+model Response {
+  id           String       @id @default(cuid())
+  userId       String
+  questionId   String
+  createdAt    DateTime     @default(now())
+  optionId     Int
+  pollOption   PollOption   @relation(fields: [optionId], references: [id])
+  pollQuestion PollQuestion @relation(fields: [questionId], references: [id])
+  User         User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+enum QuizStatus {
+  ACTIVE
+  INACTIVE
+  COMPLETED
+}
