@@ -186,7 +186,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = 8080;
+const PORT = 3000;
 httpServer.listen(PORT, () => {
   console.log(`Socket.IO server running on port ${PORT}`);
 });
@@ -197,6 +197,3 @@ process.on("SIGINT", async () => {
   process.exit();
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-})
