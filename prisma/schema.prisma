@@ -55,12 +55,12 @@ model User {
   id           Int            @id @default(autoincrement())
   email        String         @unique
   name         String
-  studentEmail String?
-  phone        String
-  college      String
-  gender       Gender        
   userId       String         @unique
   createdAt    DateTime       @default(now())
+  college      String
+  gender       Gender
+  phone        String
+  studentEmail String?
   response     Response[]
   userResponse UserResponse[]
 }
@@ -80,12 +80,12 @@ model UserResponse {
 model Poll {
   id           String         @id @default(cuid())
   title        String
-  college      String
-  forGender    Gender
   isLive       Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   createdBy    String
+  college      String
+  forGender    Gender
   pollQuestion PollQuestion[]
 }
 
@@ -93,7 +93,7 @@ model PollOption {
   text         String
   questionId   String
   id           Int          @id @default(autoincrement())
-  pollQuestion PollQuestion @relation(fields: [questionId], references: [id])
+  pollQuestion PollQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
   Response     Response[]
 }
 
@@ -112,8 +112,8 @@ model Response {
   questionId   String
   createdAt    DateTime     @default(now())
   optionId     Int
-  pollOption   PollOption   @relation(fields: [optionId], references: [id])
-  pollQuestion PollQuestion @relation(fields: [questionId], references: [id])
+  pollOption   PollOption   @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  pollQuestion PollQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
   User         User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
