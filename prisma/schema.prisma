@@ -81,6 +81,7 @@ model Poll {
   id           String         @id @default(cuid())
   title        String
   college      String
+  forGender    Gender
   isLive       Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

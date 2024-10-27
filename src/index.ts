@@ -2,15 +2,16 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import express from "express";
 import { PollOption, PollQuestion, PrismaClient } from "@prisma/client";
-
-interface PollData{
-    title: string;
-    createdBy: string;
-    college: string;
-    questions: {
-        text: string;
-        options: string[];
-    }[];
+import { Gender } from "@prisma/client";
+interface PollData {
+  title: string;
+  createdBy: string;
+  college: string;
+  gender: Gender;
+  questions: {
+    text: string;
+    options: string[];
+  }[];
 }
 
 const prisma = new PrismaClient();
@@ -39,6 +40,7 @@ io.on("connection", (socket) => {
           title: pollData.title,
           college: pollData.college,
           createdBy: pollData.createdBy,
+          forGender: pollData.gender,
           pollQuestion: {
             create: pollData.questions.map((q) => ({
               text: q.text,
