@@ -52,11 +52,15 @@ model Quiz {
 }
 
 model User {
+  id           Int            @id @default(autoincrement())
   email        String         @unique
   name         String
+  studentEmail String?
+  phone        String
+  college      String
+  gender       Gender        
   userId       String         @unique
   createdAt    DateTime       @default(now())
-  id           Int            @id @default(autoincrement())
   response     Response[]
   userResponse UserResponse[]
 }
@@ -116,4 +120,9 @@ enum QuizStatus {
   ACTIVE
   INACTIVE
   COMPLETED
+}
+
+enum Gender {
+  Male
+  Female
 }
