@@ -126,4 +126,5 @@ enum QuizStatus {
 enum Gender {
   Male
   Female
+  All
 }
