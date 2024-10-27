@@ -6,6 +6,7 @@ import { PollOption, PollQuestion, PrismaClient } from "@prisma/client";
 interface PollData{
     title: string;
     createdBy: string;
+    college: string;
     questions: {
         text: string;
         options: string[];
@@ -36,6 +37,7 @@ io.on("connection", (socket) => {
       const newPoll = await prisma.poll.create({
         data: {
           title: pollData.title,
+          college: pollData.college,
           createdBy: pollData.createdBy,
           pollQuestion: {
             create: pollData.questions.map((q) => ({

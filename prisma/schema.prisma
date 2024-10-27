@@ -76,6 +76,7 @@ model UserResponse {
 model Poll {
   id           String         @id @default(cuid())
   title        String
+  college      String
   isLive       Boolean        @default(true)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
