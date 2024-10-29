@@ -188,6 +188,23 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
+  
+  socket.on("delete-response", async ({ userId, questionId }) => {
+    try {
+      // Delete the previous response based on userId and questionId
+      await prisma.response.deleteMany({
+        where: {
+          userId,
+          questionId,
+        },
+      });
+    } catch (error) {
+      console.error("Error deleting response:", error);
+      socket.emit("error", "Failed to delete the previous response.");
+    }
+  });
+
+
 });
 
 const PORT = 3000;
