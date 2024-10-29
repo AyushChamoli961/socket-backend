@@ -184,6 +184,26 @@ io.on("connection", (socket) => {
       console.error("Error toggling poll status:", error);
     }
   });
+  
+  socket.on("check-status", async(questionId, userId) => {
+    try {
+      const response = await prisma.response.findFirst({
+        where: {
+          questionId,
+          userId,
+        },
+      });
+      if (response) {
+        socket.emit("error", "Response already exists");
+        socket.emit("response-exists", response);
+      } else {
+        socket.emit("response-not-found");
+      }
+    }
+    catch(error){
+      console.log(error)
+    }
+})
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
