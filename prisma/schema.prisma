@@ -116,7 +116,7 @@ model Response {
   pollQuestion PollQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
   User         User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
-  @@unique([userId, questionId])
+  
 }
 
 enum QuizStatus {
