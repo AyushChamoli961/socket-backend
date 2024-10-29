@@ -185,8 +185,9 @@ io.on("connection", (socket) => {
     }
   });
   
-  socket.on("check-status", async(questionId, userId) => {
+  socket.on("check-status", async({questionId, userId}) => {
     try {
+      console.log("Checking status", questionId, userId);
       const response = await prisma.response.findFirst({
         where: {
           questionId,
